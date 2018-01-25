@@ -1,0 +1,25 @@
+{
+    "name": "brzuchal/source-code-search",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michał Brzuchalski",
+            "email": "michal.brzuchalski@gmail.com"
+        }
+    ],
+    "require": {
+        "friendsofphp/php-cs-fixer": "^2.10"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Brzuchal\\SourceCodeSearch\\": "src/"
+        }
+    },
+    "config": {
+        "bin-dir": "bin/"
+    }
+}
