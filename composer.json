@@ -1,6 +1,7 @@
 {
     "name": "brzuchal/source-code-search",
     "type": "project",
+    "description": "Source code remote repositories (like GitHub, GitLab, etc.) search",
     "license": "MIT",
     "authors": [
         {
@@ -9,14 +10,21 @@
         }
     ],
     "require": {
-        "friendsofphp/php-cs-fixer": "^2.10"
+        "friendsofphp/php-cs-fixer": "^2.10",
+        "esky/enum": "^1.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.5"
+        "phpunit/phpunit": "^6.5",
+        "symfony/var-dumper": "^4.0"
     },
     "autoload": {
         "psr-4": {
             "Brzuchal\\SourceCodeSearch\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Brzuchal\\SourceCodeSearch\\": "test/"
         }
     },
     "config": {
