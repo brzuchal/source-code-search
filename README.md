@@ -10,3 +10,19 @@ Production-ready simple REST API for searching in all Github code.
 * The page number should be changeable by a query string parameter
 * The sorting should be by score, but must be changeable by a query string parameter
 
+## Development
+
+Run test using make target
+```bash
+make test
+```
+
+Run code sniffer fixer using make target
+```bash
+make cs
+```
+
+Run all using one make target
+```bash
+make it
+```
