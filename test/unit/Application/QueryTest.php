@@ -25,7 +25,7 @@ class QueryTest extends TestCase
     /**
      * @depends testCreate
      */
-    public function testQueryStringGetter(Query $query): void
+    public function testGetQueryString(Query $query): void
     {
         $queryString = $query->getQueryString();
         $this->assertNotEmpty($queryString);
@@ -35,7 +35,7 @@ class QueryTest extends TestCase
     /**
      * @depends testCreate
      */
-    public function testSortFieldGetter(Query $query): void
+    public function testGetSortField(Query $query): void
     {
         $sortField = $query->getSortField();
         $this->assertNotEmpty($sortField);
@@ -45,7 +45,7 @@ class QueryTest extends TestCase
     /**
      * @depends testCreate
      */
-    public function testSortOrderGetter(Query $query): void
+    public function testGetSortOrder(Query $query): void
     {
         $sortOrder = $query->getSortOrder();
         $this->assertNotEmpty($sortOrder);

@@ -6,7 +6,40 @@ use IteratorAggregate;
 
 final class Result implements IteratorAggregate
 {
-    private $results = [];
+    /** @var array|ResultItem[] */
+    private $items;
+    /** @var int */
+    private $totalCount;
+    /** @var int */
+    private $pageNumber;
+    /** @var int */
+    private $numberOfPages;
+
+    public function __construct(array $items, int $totalCount, int $pageNumber, int $numberOfPages)
+    {
+        // collection type check at run-time hack
+        $this->items = (function (ResultItem ...$items) {
+            return $items;
+        })(...$items);
+        $this->totalCount = $totalCount;
+        $this->pageNumber = $pageNumber;
+        $this->numberOfPages = $numberOfPages;
+    }
+
+    public function getTotalCount(): int
+    {
+        return $this->totalCount;
+    }
+
+    public function getPageNumber(): int
+    {
+        return $this->pageNumber;
+    }
+
+    public function getNumberOfPages(): int
+    {
+        return $this->numberOfPages;
+    }
 
     /**
      * Retrieve an external iterator
@@ -17,6 +50,6 @@ final class Result implements IteratorAggregate
      */
     public function getIterator()
     {
-        return new ArrayIterator($this->results);
+        return new ArrayIterator($this->items);
     }
 }
