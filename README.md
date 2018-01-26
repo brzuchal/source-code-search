@@ -2,6 +2,8 @@
 
 Production-ready simple REST API for searching in all Github code.
 
+[![Build Status](https://api.travis-ci.org/brzuchal/source-code-search.svg?branch=master)](https://travis-ci.org/brzuchal/source-code-search)
+
 ## Requirements
 
 * Must be easy to replace, so I can change provider if I some day want to use GitLab or Bitbucket, or all of them
