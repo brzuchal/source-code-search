@@ -10,18 +10,7 @@ final class ResultItem
     /** @var ResultItemRepository */
     private $repository;
 
-    public static function createFromStrings(
-        string $name,
-        string $path,
-        string $repositoryName,
-        string $repositoryOwner
-    ) : self {
-        $repository = ResultItemRepository::createFromStrings($repositoryName, $repositoryOwner);
-
-        return new self($name, $path, $repository);
-    }
-
-    private function __construct(string $name, string $path, ResultItemRepository $repository)
+    public function __construct(string $name, string $path, ResultItemRepository $repository)
     {
         $this->name = $name;
         $this->path = $path;
