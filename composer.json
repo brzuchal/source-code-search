@@ -13,7 +13,9 @@
         "friendsofphp/php-cs-fixer": "^2.10",
         "esky/enum": "^1.1",
         "knplabs/github-api": "^2.7",
-        "php-http/guzzle6-adapter": "^1.1"
+        "php-http/guzzle6-adapter": "^1.1",
+        "symfony/console": "^4.0",
+        "pimple/pimple": "^3.2"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.5",
@@ -26,7 +28,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Brzuchal\\SourceCodeSearch\\": "test/"
+            "Brzuchal\\SourceCodeSearch\\UnitTest\\": "test/unit/",
+            "Brzuchal\\SourceCodeSearch\\IntegrationTest\\": "test/integration/"
         }
     },
     "config": {

@@ -12,6 +12,14 @@ Production-ready simple REST API for searching in all Github code.
 * The page number should be changeable by a query string parameter
 * The sorting should be by score, but must be changeable by a query string parameter
 
+## Usage
+
+Console application
+```bash
+bin/console search composer.json user:brzuchal
+```
+> Note! Use `--help` option to get usage description.
+
 ## Development
 
 Run test using make target

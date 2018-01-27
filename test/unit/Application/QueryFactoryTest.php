@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-namespace Brzuchal\SourceCodeSearch\Test\Application;
+namespace Brzuchal\SourceCodeSearch\UnitTest\Application;
 
 use Brzuchal\SourceCodeSearch\Application\Query;
 use Brzuchal\SourceCodeSearch\Application\QueryFactory;

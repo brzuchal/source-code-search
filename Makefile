@@ -10,6 +10,7 @@ cs: vendor
 
 test: vendor
 	bin/phpunit --configuration=test/unit/phpunit.xml
+	bin/phpunit --configuration=test/integration/phpunit.xml
 
 vendor: composer.json composer.lock
 	composer self-update

@@ -1,5 +1,5 @@
 <?php declare(strict_types=1);
-namespace Brzuchal\SourceCodeSearch\Test\Application;
+namespace Brzuchal\SourceCodeSearch\UnitTest\Application;
 
 use Brzuchal\SourceCodeSearch\Application\ResultItem;
 use Brzuchal\SourceCodeSearch\Application\ResultItemRepository;
@@ -7,13 +7,12 @@ use PHPUnit\Framework\TestCase;
 
 class ResultItemTest extends TestCase
 {
-    public function testCreateFromStrings(): ResultItem
+    public function testNotEmpty(): ResultItem
     {
-        $item = ResultItem::createFromStrings(
+        $item = new ResultItem(
             'composer.json',
             'composer.json',
-            'source-code-search',
-            'brzuchal'
+            ResultItemRepository::createFromStrings('source-code-search', 'brzuchal')
         );
         $this->assertNotEmpty($item);
         $this->assertInstanceOf(ResultItem::class, $item);
@@ -22,7 +21,7 @@ class ResultItemTest extends TestCase
     }
 
     /**
-     * @depends testCreateFromStrings
+     * @depends testNotEmpty
      */
     public function testGetName(ResultItem $item): void
     {
@@ -32,7 +31,7 @@ class ResultItemTest extends TestCase
     }
 
     /**
-     * @depends testCreateFromStrings
+     * @depends testNotEmpty
      */
     public function testGetPath(ResultItem $item): void
     {
@@ -42,7 +41,7 @@ class ResultItemTest extends TestCase
     }
 
     /**
-     * @depends testCreateFromStrings
+     * @depends testNotEmpty
      */
     public function testGetRepository(ResultItem $item): void
     {

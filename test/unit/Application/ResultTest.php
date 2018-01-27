@@ -1,8 +1,9 @@
 <?php declare(strict_types=1);
-namespace Brzuchal\SourceCodeSearch\Test\Application;
+namespace Brzuchal\SourceCodeSearch\UnitTest\Application;
 
 use Brzuchal\SourceCodeSearch\Application\Result;
 use Brzuchal\SourceCodeSearch\Application\ResultItem;
+use Brzuchal\SourceCodeSearch\Application\ResultItemRepository;
 use PHPUnit\Framework\TestCase;
 
 class ResultTest extends TestCase
@@ -10,17 +11,15 @@ class ResultTest extends TestCase
     public function testCreateResult(): Result
     {
         $items = [
-            ResultItem::createFromStrings(
+            new ResultItem(
                 'composer.json',
                 'composer.json',
-                'source-code-search',
-                'brzuchal'
+                ResultItemRepository::createFromStrings('source-code-search', 'brzuchal')
             ),
-            ResultItem::createFromStrings(
+            new ResultItem(
                 'composer.lock',
                 'composer.lock',
-                'source-code-search',
-                'brzuchal'
+                ResultItemRepository::createFromStrings('source-code-search', 'brzuchal')
             ),
         ];
         $result = new Result($items, \count($items), 1, 1);
