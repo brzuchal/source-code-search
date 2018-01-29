@@ -7,6 +7,7 @@ use Brzuchal\SourceCodeSearch\Application\SearchService;
 use Brzuchal\SourceCodeSearch\Infrastructure\GithubSearchService;
 use Brzuchal\SourceCodeSearch\Ui\Command\SearchCommand;
 use Brzuchal\SourceCodeSearch\Ui\Controller\SearchController;
+use Brzuchal\SourceCodeSearch\Ui\Controller\SwaggerController;
 use Github\Client;
 use JMS\Serializer\Naming\IdenticalPropertyNamingStrategy;
 use JMS\Serializer\Serializer;
@@ -14,6 +15,8 @@ use JMS\Serializer\SerializerBuilder;
 use Pimple\Container;
 use Silex\Application as SilexApplication;
 use Symfony\Component\Console\Application as ConsoleApplication;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 $config = (array)require __DIR__ . '/config.php';
@@ -92,10 +95,28 @@ $container[SearchController::class] = function (Container $container): SearchCon
         $container[Serializer::class]
     );
 };
+$container[SwaggerController::class] = function (): SwaggerController {
+    return new SwaggerController();
+};
 
 $container[SilexApplication::class] = function (Container $container) : SilexApplication {
     $app = new SilexApplication();
-    $app->get('/search', $container[SearchController::class]);
+    $app->get('/', function (Request $request): Response {
+        return new Response(<<<HTML
+<!DOCTYPE html>
+<html>
+<head><title>Source Code Search</title></head>
+<body>
+    <h1>Source Code Search</h1>
+    <p>Read <a href="/swagger.json">Swagger Documentation</a> or 
+    navigate to API <a href="/api/search">endpoint</a></p>
+</body>
+</html>
+HTML
+);
+    });
+    $app->get('/swagger.json', $container[SwaggerController::class]);
+    $app->get('/api/search', $container[SearchController::class]);
     $app->error(function (\Exception $e, $code) use($app) {
         if ($e instanceof HttpException) {
             return $app->json([

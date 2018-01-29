@@ -14,13 +14,39 @@ Production-ready simple REST API for searching in all Github code.
 
 ## Usage
 
-Console application
+### Production
+
+#### REST API
+
+Run make target to build and run production ready environment
 ```bash
-bin/console search composer.json user:brzuchal
+make prod
+```
+
+Then enter `http://localhost:9999/`.
+There are two available endpoints:
+* `/swagger.json` - with Swagger API specification in JSON
+* `/api/search` - for search requests
+
+#### Console application
+
+Run bash inside Docker container using `prod-bash` make target like:
+```bash
+make prod-bash
+```
+
+Then run console app for eg.:
+```bash
+bin/console search composer.json user:symfony
 ```
 > Note! Use `--help` option to get usage description.
 
-## Development
+### Development
+
+Run dev environment in Docker container
+```bash
+make dev
+```
 
 Run test using make target
 ```bash
@@ -36,3 +62,9 @@ Run all using one make target
 ```bash
 make it
 ```
+
+## Future optimisations
+
+There are few point to cover during future development:
+* Prepare `php.ini` for production environment
+* Add acceptance tests for REST API testing using BDD (for eg. Behat)

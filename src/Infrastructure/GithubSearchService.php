@@ -86,6 +86,7 @@ class GithubSearchService implements SearchService
 
     /**
      * We need to fix SearchApi because GitHub v3 accepts 'page' param instead of 'queryPage'
+     * It's a temporary fix and should be implemented in standalone class
      */
     private function fixSearchApi(Search $searchApi): Search
     {

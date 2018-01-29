@@ -1,0 +1,7 @@
+FROM php:7.2-apache
+
+RUN docker-php-ext-install json
+RUN a2enmod rewrite
+RUN curl --silent --show-error https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
+WORKDIR /var/www/html

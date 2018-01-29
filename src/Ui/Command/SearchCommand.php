@@ -99,7 +99,6 @@ class SearchCommand extends Command
                 ->withPage($pageNumber, $perPageLimit)
                 ->build();
             $results = $this->searchService->find($query);
-            // @TODO: add CLI formatter
             dump($results);
         } catch (\Exception $exception) {
             $output->writeln("<error>{$exception}</error>");

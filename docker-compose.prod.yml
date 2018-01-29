@@ -1,0 +1,8 @@
+version: '2.0'
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    ports:
+      - 9999:80

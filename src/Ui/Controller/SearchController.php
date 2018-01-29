@@ -4,12 +4,29 @@ namespace Brzuchal\SourceCodeSearch\Ui\Controller;
 use Brzuchal\SourceCodeSearch\Application\QueryBuilder;
 use Brzuchal\SourceCodeSearch\Application\SearchService;
 use JMS\Serializer\Serializer;
+use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
+/**
+ * @SWG\Swagger(
+ *     @SWG\Get(
+ *         path="/api/search",
+ *         description="Search result",
+ *         @SWG\Parameter(name="query", in="query", required=true, allowEmptyValue=false, type="string"),
+ *         @SWG\Parameter(name="sort", in="query", required=false, allowEmptyValue=true, type="string"),
+ *         @SWG\Parameter(name="order", in="query", required=false, allowEmptyValue=true, type="string"),
+ *         @SWG\Parameter(name="page", in="query", required=false, allowEmptyValue=true, type="integer"),
+ *         @SWG\Parameter(name="limit", in="query", required=false, allowEmptyValue=true, type="integer"),
+ *         @SWG\Response(response=200, description="Search result"),
+ *         @SWG\Response(response="422", description="Mandatory fields are missing in payload"),
+ *         @SWG\Response(response="400", description="Error while searching")
+ *     )
+ * )
+ */
 class SearchController
 {
     /** @var SearchService */

@@ -1,6 +1,29 @@
-.PHONY: coverage cs it test
+.PHONY: coverage cs it test dev dev-bash dev-stop prod prod-bash prod-stop vendor
 
 it: cs test
+
+dev:
+	docker-compose -f docker-compose.yml -f docker-compose.dev.yml build
+	docker-compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+	docker-compose -f docker-compose.yml -f docker-compose.prod.yml exec php make vendor
+	docker-compose -f docker-compose.yml -f docker-compose.prod.yml ps
+
+dev-bash:
+	docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec php bash
+
+dev-stop:
+	docker-compose -f docker-compose.yml -f docker-compose.dev.yml kill
+
+prod:
+	docker-compose -f docker-compose.yml -f docker-compose.prod.yml build
+	docker-compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+	docker-compose -f docker-compose.yml -f docker-compose.prod.yml ps
+
+prod-bash:
+	docker-compose -f docker-compose.yml -f docker-compose.prod.yml exec php bash
+
+prod-stop:
+	docker-compose -f docker-compose.yml -f docker-compose.prod.yml kill
 
 coverage: vendor
 	bin/phpunit --configuration=test/unit/phpunit.xml --coverage-text
