@@ -91,8 +91,8 @@ class SearchCommand extends Command
                     "Invalid sort order expecting (ASC, DESC), given: {$sortOrder}"
                 );
             }
-            $pageNumber = $input->getOption('page');
-            $perPageLimit = $input->getOption('limit');
+            $pageNumber = (int)$input->getOption('page');
+            $perPageLimit = (int)$input->getOption('limit');
             $query = $this->queryBuilder
                 ->withQuery(\implode(' ', $input->getArgument('query')))
                 ->withSort($sortField, $sortOrder)

@@ -62,11 +62,14 @@ class SearchController
             );
         }
         $pageNumber = $request->query->get('page') ?? 1;
-        $perPageLimit = $request->query->get('limit');
+        $pageNumber = (int)$pageNumber;
+        $perPageLimit = $request->query->get('limit') ?? $this->perPageLimit;
+        $perPageLimit = (int)$perPageLimit;
+
         $query = $this->queryBuilder
             ->withQuery($queryString)
             ->withSort($sortField ?? $this->sortField, $sortOrder ?? $this->sortOrder)
-            ->withPage($pageNumber ?? 1, $perPageLimit ?? $this->perPageLimit)
+            ->withPage($pageNumber, $perPageLimit)
             ->build();
         $results = $this->searchService->find($query);
 

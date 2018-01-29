@@ -7,7 +7,9 @@ use Brzuchal\SourceCodeSearch\Application\QuerySortOrder;
 use Brzuchal\SourceCodeSearch\Application\Result;
 use Brzuchal\SourceCodeSearch\Application\ResultBuilder;
 use Brzuchal\SourceCodeSearch\Application\SearchService;
+use Github\Api\Search;
 use Github\Client;
+use Github\HttpClient\Message\ResponseMediator;
 
 class GithubSearchService implements SearchService
 {
@@ -28,7 +30,7 @@ class GithubSearchService implements SearchService
         $sortOrder = $this->getSortOrderFromQuery($query);
         $page = $query->getPage();
 
-        $searchApi = $this->client->search();
+        $searchApi = $this->fixSearchApi($this->client->search());
         $searchApi->setPage($page->getPageNumber());
         $searchApi->setPerPage($page->getPerPageLimit());
         /** @var array[] $result */
@@ -80,5 +82,44 @@ class GithubSearchService implements SearchService
         }
 
         return $sortOrder;
+    }
+
+    /**
+     * We need to fix SearchApi because GitHub v3 accepts 'page' param instead of 'queryPage'
+     */
+    private function fixSearchApi(Search $searchApi): Search
+    {
+        return new class($searchApi) extends Search
+        {
+            /** @var \Github\Api\Search */
+            private $search;
+
+            public function __construct(Search $search)
+            {
+                $this->search = $search;
+                parent::__construct($search->client);
+            }
+
+            protected function get($path, array $parameters = [], array $requestHeaders = [])
+            {
+                if (null !== $this->getPage() && !isset($parameters['page'])) {
+                    $parameters['page'] = $this->getPage();
+                }
+                if (null !== $this->perPage && !isset($parameters['per_page'])) {
+                    $parameters['per_page'] = $this->perPage;
+                }
+                if (\array_key_exists('ref', $parameters) && \is_null($parameters['ref'])) {
+                    unset($parameters['ref']);
+                }
+
+                if (\count($parameters) > 0) {
+                    $path .= '?' . \http_build_query($parameters);
+                }
+
+                $response = $this->client->getHttpClient()->get($path, $requestHeaders);
+
+                return ResponseMediator::getContent($response);
+            }
+        };
     }
 }
