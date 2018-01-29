@@ -68,3 +68,5 @@ make it
 There are few point to cover during future development:
 * Prepare `php.ini` for production environment
 * Add acceptance tests for REST API testing using BDD (for eg. Behat)
+* Compact all Docker Compose files in make targets as variables
+* Build all in one Docker container and pass artifact to production ready Docker image
