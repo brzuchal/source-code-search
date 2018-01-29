@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 namespace Brzuchal\SourceCodeSearch\Ui\Controller;
 
-use Brzuchal\SourceCodeSearch\Application\QueryFactory;
+use Brzuchal\SourceCodeSearch\Application\QueryBuilder;
 use Brzuchal\SourceCodeSearch\Application\SearchService;
 use JMS\Serializer\Serializer;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -14,8 +14,8 @@ class SearchController
 {
     /** @var SearchService */
     private $searchService;
-    /** @var QueryFactory */
-    private $queryFactory;
+    /** @var QueryBuilder */
+    private $queryBuilder;
     /** @var string */
     private $sortField;
     /** @var string */
@@ -27,14 +27,14 @@ class SearchController
 
     public function __construct(
         SearchService $searchService,
-        QueryFactory $queryFactory,
+        QueryBuilder $queryBuilder,
         string $sortField,
         string $sortOrder,
         int $perPageLimit,
         Serializer $serializer
     ) {
         $this->searchService = $searchService;
-        $this->queryFactory = $queryFactory;
+        $this->queryBuilder = $queryBuilder;
         $this->sortField = $sortField;
         $this->sortOrder = $sortOrder;
         $this->perPageLimit = $perPageLimit;
@@ -43,6 +43,12 @@ class SearchController
 
     public function __invoke(Request $request): Response
     {
+        $queryString = $request->query->get('query');
+        if (empty($queryString)) {
+            throw new UnprocessableEntityHttpException(
+                'Empty query parameter'
+            );
+        }
         $sortField = $request->query->get('sort');
         if (!empty($sortField) && false === \in_array($sortField, ['BEST_MATCH', 'INDEXED'], true)) {
             throw new UnprocessableEntityHttpException(
@@ -55,17 +61,13 @@ class SearchController
                 "Invalid sort order parameter expecting (ASC, DESC), given: {$sortOrder}"
             );
         }
-        $queryString = $request->query->get('query');
-        if (empty($queryString)) {
-            throw new UnprocessableEntityHttpException(
-                'Empty query parameter'
-            );
-        }
-        $query = $this->queryFactory->createQuery(
-            $queryString,
-            $sortField,
-            $sortOrder
-        );
+        $pageNumber = $request->query->get('page') ?? 1;
+        $perPageLimit = $request->query->get('limit');
+        $query = $this->queryBuilder
+            ->withQuery($queryString)
+            ->withSort($sortField ?? $this->sortField, $sortOrder ?? $this->sortOrder)
+            ->withPage($pageNumber ?? 1, $perPageLimit ?? $this->perPageLimit)
+            ->build();
         $results = $this->searchService->find($query);
 
         return new JsonResponse($this->serializer->serialize($results, 'json'), 200, [], true);

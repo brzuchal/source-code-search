@@ -26,11 +26,11 @@ class GithubSearchService implements SearchService
     {
         $sortField = $this->getSortFieldFromQuery($query);
         $sortOrder = $this->getSortOrderFromQuery($query);
+        $page = $query->getPage();
 
         $searchApi = $this->client->search();
-        // @TODO: populate from Query object
-        $searchApi->setPage(1);
-        $searchApi->setPerPage(25);
+        $searchApi->setPage($page->getPageNumber());
+        $searchApi->setPerPage($page->getPerPageLimit());
         /** @var array[] $result */
         $result = $searchApi->code((string)$query->getQueryString(), $sortField, $sortOrder);
 

@@ -9,12 +9,19 @@ final class Query
     private $sortField;
     /** @var QuerySortOrder */
     private $sortOrder;
+    /** @var QueryPage */
+    private $queryPage;
 
-    public function __construct(QueryString $queryString, QuerySortField $sortField, QuerySortOrder $sortOrder)
-    {
+    public function __construct(
+        QueryString $queryString,
+        QuerySortField $sortField,
+        QuerySortOrder $sortOrder,
+        QueryPage $queryPage
+    ) {
         $this->queryString = $queryString;
         $this->sortField = $sortField;
         $this->sortOrder = $sortOrder;
+        $this->queryPage = $queryPage;
     }
 
     public function getQueryString(): QueryString
@@ -30,5 +37,10 @@ final class Query
     public function getSortOrder(): QuerySortOrder
     {
         return $this->sortOrder;
+    }
+
+    public function getPage(): QueryPage
+    {
+        return $this->queryPage;
     }
 }

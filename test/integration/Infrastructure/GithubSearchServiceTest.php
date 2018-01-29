@@ -2,6 +2,7 @@
 namespace Brzuchal\SourceCodeSearch\IntegrationTest\Infrastructure;
 
 use Brzuchal\SourceCodeSearch\Application\Query;
+use Brzuchal\SourceCodeSearch\Application\QueryPage;
 use Brzuchal\SourceCodeSearch\Application\QuerySortField;
 use Brzuchal\SourceCodeSearch\Application\QuerySortOrder;
 use Brzuchal\SourceCodeSearch\Application\QueryString;
@@ -29,7 +30,8 @@ class GithubSearchServiceTest extends \PHPUnit\Framework\TestCase
         $query = new Query(
             QueryString::fromString('composer.json user:brzuchal'),
             QuerySortField::BEST_MATCH(),
-            QuerySortOrder::DESC()
+            QuerySortOrder::DESC(),
+            QueryPage::createFromInts(1, 20)
         );
         $result = $this->githubSearchService->find($query);
         $this->assertNotEmpty($result);

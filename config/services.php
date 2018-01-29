@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-use Brzuchal\SourceCodeSearch\Application\QueryFactory;
+use Brzuchal\SourceCodeSearch\Application\QueryBuilder;
 use Brzuchal\SourceCodeSearch\Application\ResultBuilder;
 use Brzuchal\SourceCodeSearch\Application\ResultItemFactory;
 use Brzuchal\SourceCodeSearch\Application\SearchService;
@@ -25,8 +25,13 @@ $container[ResultItemFactory::class] = function (): ResultItemFactory {
 $container[ResultBuilder::class] = function (Container $container): ResultBuilder {
     return new ResultBuilder($container[ResultItemFactory::class]);
 };
-$container[QueryFactory::class] = function (Container $container): QueryFactory {
-    return new QueryFactory($container['sort_field'], $container['sort_order']);
+$container[QueryBuilder::class] = function (Container $container): QueryBuilder {
+    return new QueryBuilder(
+        $container['sort_field'],
+        $container['sort_order'],
+        1,
+        $container['per_page_limit']
+    );
 };
 
 $container[Client::class] = function (): Client {
@@ -57,7 +62,7 @@ $container[Serializer::class] = function (Container $container): Serializer {
 $container[SearchCommand::class] = function (Container $container): SearchCommand {
     return new SearchCommand(
         $container[SearchService::class],
-        $container[QueryFactory::class],
+        $container[QueryBuilder::class],
         $container['sort_field'],
         $container['sort_order'],
         $container['per_page_limit']
@@ -80,7 +85,7 @@ $container[ConsoleApplication::class] = function (Container $container): Console
 $container[SearchController::class] = function (Container $container): SearchController {
     return new SearchController(
         $container[SearchService::class],
-        $container[QueryFactory::class],
+        $container[QueryBuilder::class],
         $container['sort_field'],
         $container['sort_order'],
         $container['per_page_limit'],

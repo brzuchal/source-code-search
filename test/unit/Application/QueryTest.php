@@ -2,6 +2,7 @@
 namespace Brzuchal\SourceCodeSearch\UnitTest\Application;
 
 use Brzuchal\SourceCodeSearch\Application\Query;
+use Brzuchal\SourceCodeSearch\Application\QueryPage;
 use Brzuchal\SourceCodeSearch\Application\QuerySortField;
 use Brzuchal\SourceCodeSearch\Application\QuerySortOrder;
 use Brzuchal\SourceCodeSearch\Application\QueryString;
@@ -14,7 +15,8 @@ class QueryTest extends TestCase
         $query = new Query(
             QueryString::fromString('cats stars:>10'),
             QuerySortField::BEST_MATCH(),
-            QuerySortOrder::DESC()
+            QuerySortOrder::DESC(),
+            QueryPage::createFromInts(1, 20)
         );
         $this->assertNotEmpty($query);
         $this->assertInstanceOf(Query::class, $query);
@@ -50,5 +52,15 @@ class QueryTest extends TestCase
         $sortOrder = $query->getSortOrder();
         $this->assertNotEmpty($sortOrder);
         $this->assertInstanceOf(QuerySortOrder::class, $sortOrder);
+    }
+
+    /**
+     * @depends testCreate
+     */
+    public function testGetPage(Query $query): void
+    {
+        $page = $query->getPage();
+        $this->assertNotEmpty($page);
+        $this->assertInstanceOf(QueryPage::class, $page);
     }
 }
