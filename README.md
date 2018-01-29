@@ -26,7 +26,7 @@ make prod
 Then enter `http://localhost:9999/`.
 There are two available endpoints:
 * `/swagger.json` - with Swagger API specification in JSON
-* `/api/search` - for search requests
+* `/api/search` - for search requests for eg. [composer.json user:symfony](http://localhost:9999/api/search?query=composer.json+user:symfony)
 
 #### Console application
 
