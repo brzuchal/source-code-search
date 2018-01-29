@@ -80,13 +80,13 @@ class SearchCommand extends Command
     {
         try {
             $sortField = $input->getOption('sort');
-            if (false === \in_array($sortField, ['BEST_MATCH', 'INDEXED'])) {
+            if (false === \in_array($sortField, ['BEST_MATCH', 'INDEXED'], true)) {
                 throw new \InvalidArgumentException(
                     "Invalid sort field expecting (BEST_MATCH, INDEXED), given: {$sortField}"
                 );
             }
             $sortOrder = $input->getOption('order');
-            if (false === \in_array($sortOrder, ['ASC', 'DESC'])) {
+            if (false === \in_array($sortOrder, ['ASC', 'DESC'], true)) {
                 throw new \InvalidArgumentException(
                     "Invalid sort order expecting (ASC, DESC), given: {$sortOrder}"
                 );
