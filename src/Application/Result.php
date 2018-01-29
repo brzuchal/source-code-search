@@ -3,7 +3,12 @@ namespace Brzuchal\SourceCodeSearch\Application;
 
 use ArrayIterator;
 use IteratorAggregate;
+use JMS\Serializer\Annotation as Serializer;
 
+/**
+ * @Serializer\AccessorOrder("custom", custom={"totalCount", "pageNumber", "numberOfPages", "items"})
+ * @Serializer\VirtualProperty("items", exp="obj.getIterator()")
+ */
 final class Result implements IteratorAggregate
 {
     /** @var array|ResultItem[] */
