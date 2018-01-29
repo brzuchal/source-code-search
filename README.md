@@ -12,6 +12,26 @@ Production-ready simple REST API for searching in all Github code.
 * The page number should be changeable by a query string parameter
 * The sorting should be by score, but must be changeable by a query string parameter
 
+## Config
+
+All default setting can be setup in `config/config.php` file
+
+```php
+return [
+    'sort_field' => 'BEST_MATCH',
+    'sort_order' => 'DESC',
+    'per_page_limit' => 25,
+    'search_service' => GithubSearchService::class,
+];
+```
+All default parameters are changeable using query param.
+REST API endpoint is documented in Swagger at `/swagger.json` endpoint which is generated dynamically through annotations.
+
+Search provider can be easily replaced using a `SearchProvider` interface.
+I've used [knplabs/github-api](https://github.com/knplabs/github-api) but there is also available client for Gitlab as well.
+I had to fix the library temporarily in `GithubSearchService` implementation because of non standard with GitHub v3 'page' param 
+which was not handled by library properly.
+
 ## Usage
 
 ### Production
